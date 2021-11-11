@@ -25,7 +25,7 @@ const HomePage = () => {
       })
       .catch((err) => console.log("Error", err));
 
-    setShortLink(`https://sanjusarkar.cf/${data.short_link}`);
+    setShortLink(`https://shortit-backend.herokuapp.com/${data.short_link}`);
   };
 
   const resetAll = () => {
