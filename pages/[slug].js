@@ -33,7 +33,7 @@ export default Slug;
 
 export async function getServerSideProps(context) {
   const { slug } = context.params;
-  const data = await fetch("http://127.0.0.1:8000/api/get/", {
+  const data = await fetch("https://shortit-backend.herokuapp.com/api/get/", {
     method: "POST",
     body: `{"short_link": "${slug}"}`,
   }).then((res) => {

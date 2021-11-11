@@ -8,10 +8,13 @@ const HomePage = () => {
   const router = useRouter();
 
   const getShortLink = async () => {
-    const data = await fetch("http://127.0.0.1:8000/api/create/", {
-      method: "POST",
-      body: `{"full_link": "${fullLink}"}`,
-    })
+    const data = await fetch(
+      "https://shortit-backend.herokuapp.com/api/create/",
+      {
+        method: "POST",
+        body: `{"full_link": "${fullLink}"}`,
+      }
+    )
       .then((res) => {
         console.log(res);
         if (res.status !== 200) {
@@ -22,7 +25,7 @@ const HomePage = () => {
       })
       .catch((err) => console.log("Error", err));
 
-    setShortLink(`http://localhost:3000/${data.short_link}`);
+    setShortLink(`https://sanjusarkar.cf/${data.short_link}`);
   };
 
   const resetAll = () => {
