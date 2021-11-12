@@ -4,16 +4,24 @@ import { useState } from "react";
 const HomePage = () => {
   const [fullLink, setFullLink] = useState("");
   const [shortLink, setShortLink] = useState("");
-  const [isCustom, setIsCustom] = useState(false);
   const [customLink, setCustomLink] = useState("");
+  const [error, setError] = useState(false);
+  const [isCustom, setIsCustom] = useState(false);
   const [copyDone, setCopyDone] = useState(false);
   const router = useRouter();
 
-  // const BASE_URL = "http://127.0.0.1:8000";
-  // const FRONT_URL = "http://localhost:3000/";
-  const BASE_URL = "https://shortit-backend.herokuapp.com";
-  const FRONT_URL = "https://share-it-frontend.vercel.app/";
   // const FRONT_URL = "https://sarkarsanju.cf/";
+
+  // let BASE_URL = "http://127.0.0.1:8000";
+  // let FRONT_URL = "http://localhost:3000/";
+
+  BASE_URL = "https://shortit-backend.herokuapp.com";
+  FRONT_URL = "https://share-it-frontend.vercel.app/";
+
+  // if (process.env.SERVER === "PROD") {
+  //   BASE_URL = "https://shortit-backend.herokuapp.com";
+  //   FRONT_URL = "https://share-it-frontend.vercel.app/";
+  // }
 
   const getShortLink = async () => {
     const data = await fetch(`${BASE_URL}/api/create/`, {
@@ -21,7 +29,7 @@ const HomePage = () => {
       body: `{"full_link": "${fullLink}"}`,
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status !== 200) {
           return;
         }
@@ -34,20 +42,23 @@ const HomePage = () => {
   };
 
   const getCustomShortLink = async () => {
-    const data = await fetch(`${BASE_URL}/api/custom/`, {
+    const res = await fetch(`${BASE_URL}/api/custom/`, {
       method: "POST",
       body: `{"full_link": "${fullLink}", "custom_link": "${customLink}"}`,
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.status !== 200) {
-          return;
-        }
+    });
 
-        return res.json();
-      })
-      .catch((err) => console.log("Error", err));
+    if (res.status === 403) {
+      setError(true);
+      return;
+    }
 
+    if (res.status !== 200) {
+      return;
+    }
+
+    const data = await res.json();
+
+    // if (data.shor_tLink === "ERROR_LINK_NOT_FOUND") return;
     setShortLink(`${FRONT_URL}${data.short_link}`);
   };
 
@@ -59,7 +70,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-screen-lg">
+    <div className="mx-auto max-w-screen-lg relative">
       <div className="flex items-center justify-between">
         <h1 className="text-center text-6xl font-bold text-blue-600 py-5 ml-[400px]">
           Short It
@@ -87,6 +98,20 @@ const HomePage = () => {
         )}
       </div>
 
+      {error && (
+        <div className="absolute bg-red-500 py-3 text-white px-7 rounded-lg right-0 top-[85px]">
+          Error: Short link already exists
+          <div className="relative">
+            <div
+              onClick={() => setError(false)}
+              className="absolute text-black -top-9 -right-4 cursor-pointer"
+            >
+              x
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="shadow-lg flex flex-col items-center space-y-2 pb-5 max-w-screen-md mx-auto">
         <h2 className="text-4xl mt-16 font-bold mb-5">
           Paste the URL to be shortened
@@ -103,7 +128,7 @@ const HomePage = () => {
             <div className="flex w-[500px]">
               <input
                 type="text"
-                value={FRONT_URL}
+                defaultValue={FRONT_URL}
                 disabled={true}
                 className="border outline-none border-gray-500 w-[180px] rounded-tl-lg rounded-bl-lg px-3 bg-gray-400"
               />
@@ -175,7 +200,7 @@ const HomePage = () => {
             <div className="flex items-center justify-center pt-10">
               <input
                 type="text"
-                value={shortLink}
+                defaultValue={shortLink}
                 className="p-3 border border-gray-500 w-[300px] rounded-tl-md rounded-bl-md outline-none"
               />
               <button
