@@ -9,10 +9,10 @@ const HomePage = () => {
   const [copyDone, setCopyDone] = useState(false);
   const router = useRouter();
 
-  const BASE_URL = "http://127.0.0.1:8000";
-  const FRONT_URL = "http://localhost:3000/";
-  // const BASE_URL = "https://shortit-backend.herokuapp.com";
-  // const FRONT_URL = "https://share-it-frontend.vercel.app/";
+  // const BASE_URL = "http://127.0.0.1:8000";
+  // const FRONT_URL = "http://localhost:3000/";
+  const BASE_URL = "https://shortit-backend.herokuapp.com";
+  const FRONT_URL = "https://share-it-frontend.vercel.app/";
 
   const getShortLink = async () => {
     const data = await fetch(`${BASE_URL}/api/create/`, {
