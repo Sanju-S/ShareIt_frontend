@@ -32,8 +32,8 @@ const Slug = ({ data }) => {
 export default Slug;
 
 export async function getServerSideProps(context) {
-  const BASE_URL = "https://shortit-backend.herokuapp.com";
-  // const BASE_URL = "http://127.0.0.1:8000";
+  // const BASE_URL = "https://shortit-backend.herokuapp.com";
+  const BASE_URL = "http://127.0.0.1:8000";
   const { slug } = context.params;
   const data = await fetch(`${BASE_URL}/api/get/`, {
     method: "POST",
