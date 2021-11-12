@@ -5,6 +5,8 @@ const Slug = ({ data }) => {
   const [error, setError] = useState(false);
   const router = useRouter();
 
+  const FRONT_URL = "http://localhost:3000/";
+
   const handleRedirect = () => {
     if (data.full_link !== "error") {
       router.push(data.full_link);
@@ -32,8 +34,10 @@ const Slug = ({ data }) => {
 export default Slug;
 
 export async function getServerSideProps(context) {
+  // const BASE_URL = "https://shortit-backend.herokuapp.com";
+  const BASE_URL = "http://127.0.0.1:8000";
   const { slug } = context.params;
-  const data = await fetch("https://shortit-backend.herokuapp.com/api/get/", {
+  const data = await fetch(`${BASE_URL}/api/get/`, {
     method: "POST",
     body: `{"short_link": "${slug}"}`,
   }).then((res) => {
