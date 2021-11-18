@@ -32,7 +32,7 @@ const Slug = ({ data }) => {
 export default Slug;
 
 export async function getServerSideProps(context) {
-  let BASE_URL = "http://127.0.0.1:8000";
+  // let BASE_URL = "http://127.0.0.1:8000";
   let BASE_URL = "https://shortit-backend.herokuapp.com";
   // if (process.env.SERVER === "PRD") {
   //   BASE_URL = "https://shortit-backend.herokuapp.com";
